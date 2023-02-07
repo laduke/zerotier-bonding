@@ -2,7 +2,7 @@
 
 Network IO in zerotier-one is infamously single threaded. This means you can push packets around only as fast as 1 core can go. ZeroTier will be multithreaded someday. 
 
-While we wait for multithreaded zerotier, we can create multiple zerotier-one processes and bond them together with the Linux kernel. 
+While we wait for multithreaded zerotier, we can create multiple zerotier-one processes and [bond](https://wiki.linuxfoundation.org/networking/bonding) them together with the Linux kernel, and they'll load balance.  
 
 This doesn't magically double bandwidth for each core added, but it does help.
 
@@ -87,6 +87,8 @@ done
 ip link add zt-bond type bond miimon 100 mode balance-alb xmit_hash_policy 1
 ```
 
+Other bond types include balance-rr and balance-xor
+
 ### configure the bond
 ZeroTier isn't managing the IP address of the bonded node. 
 Pick an available IP address in your network's subnet. 
@@ -102,8 +104,6 @@ done
 
 ip link set zt-bond down
 ip link set zt-bond type bond miimon 100 mode balance-alb xmit_hash_policy 1
-# ip link set zt-bond type bond miimon 100 mode balance-xor xmit_hash_policy 1
-# ip link set zt-bond type bond miimon 100 mode balance-rr xmit_hash_policy 1
 
 for i in `seq ${NUM_ZT}`; do
     ip link set zt-node${i} master zt-bond
@@ -119,7 +119,7 @@ done
 ```
 
 ## Pin zerotier processes to a specific CPU core
-If you want to test, it might improve performance a little
+If you want to try it, it might improve performance a little
 
 
 ``` shell
@@ -143,9 +143,7 @@ done
 ```
 
 ## Production
-Configuring interface bonds and zerotier like this in a reproducible, production way is left as an exercise to the reader. 
-
-Maybe we'll wrap it up in a script later. 
+Configuring interface bonds and zerotier like this in a reproducible, production way is left as an exercise to the reader. Maybe we'll wrap it up in a script later. 
 
 
 
