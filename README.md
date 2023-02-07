@@ -60,7 +60,7 @@ for i in `seq ${NUM_ZT}`; do
 done
 ```
 
-We set up an alias for zeroiter-cli above. You can do `z1 <command>` to do `zerotier-cli <command>` for that node. `z1 info`
+We set up an alias for zerotier-cli above. You can do `z1 <command>` to do `zerotier-cli <command>` for that node. `z1 info`
 
 ## Enable Bridging for each of these newly created node
 ZeroTier doesn't like receiving packets for other MAC addresses by default. This is a [security feature](https://docs.zerotier.com/zerotier/manual#224ethernetbridginganame2_2_4a)
@@ -93,7 +93,7 @@ Other bond types include balance-rr and balance-xor
 ZeroTier isn't managing the IP address of the bonded node. 
 Pick an available IP address in your network's subnet. 
 
-I'm not sure if manually assiging a MAC is needed. The bond will get the MAC of the first interface that joins the bond.
+I'm not sure if manually assigning a MAC is needed. The bond will get the MAC of the first interface that joins the bond.
 
 If you want to edit the bond, you need to bring everything down and back up like so:
 ``` shell
