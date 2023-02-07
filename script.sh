@@ -64,7 +64,7 @@ setup__bond () {
 	echo ip link set zt-bond address $MAC
 	echo ip addr add $IP dev zt-bond
 	echo ip link set zt-bond up
-j
+}
 
 setup__all () {
 	echo "set -x"
