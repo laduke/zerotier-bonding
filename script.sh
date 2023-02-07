@@ -9,8 +9,8 @@ set -e
 
 setup__zt () {
 	if [ -z "${NETWORKID}" ]; then
-    echo "Please set NETWORKID at the top of this file"
-	exit
+		echo "Please set NETWORKID at the top of this file"
+		exit
 	fi
 
 	for i in `seq ${NUM_ZT}`; do
@@ -23,7 +23,7 @@ setup__zt () {
 
 	for i in `seq ${NUM_ZT}`; do
 		# echo zerotier-one -U -d -p199${i}3 ${BASE_DIR}/node${i}/;
-		core=$(expr $i - 1)
+		core=$(($i - 1))
 		echo taskset -c ${core} "zerotier-one -U -d -p199${i}3 ${BASE_DIR}/node${i}/;"
 	done
 
