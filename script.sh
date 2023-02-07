@@ -5,6 +5,8 @@ export IP=10.1.1.2/24
 export MAC=02:22:22:22:22:26
 export NUM_ZT=`nproc`
 
+set -e
+
 setup__zt () {
 	for i in `seq ${NUM_ZT}`; do
 		echo mkdir -p $BASE_DIR/node${i};
@@ -29,6 +31,10 @@ setup__zt () {
 	for i in `seq ${NUM_ZT}`; do
 		echo "zerotier-cli -D${BASE_DIR}/node${i} set $NETWORKID allowManaged=0 > /dev/null"
 	done
+
+	for i in `seq ${NUM_ZT}`; do
+		echo "alias z${i}=\"zerotier-cli -D${BASE_DIR}/node${i}\""
+	done
 }
 
 setup__bond () {
@@ -40,20 +46,19 @@ setup__bond () {
 	done
 
 	echo ip link set zt-bond down
-	echo ip link set zt-bond type bond miimon 100 mode balance-alb xmit_hash_policy 1
+	echo ip link set zt-bond type bond miimon 100 mode balance-rr xmit_hash_policy 1
 
 	for i in `seq ${NUM_ZT}`; do
 		echo ip link set zt-node${i} master zt-bond
 	done
 
-	ip link set zt-bond address $MAC
-	echo ip addr add $IP dev zt-bond
-	echo ip link set zt-bond up
-
 	for i in `seq ${NUM_ZT}`; do
 		echo ip link set zt-node${i} up
 	done
 
+	echo ip link set zt-bond address $MAC
+	echo ip addr add $IP dev zt-bond
+	echo ip link set zt-bond up
 }
 
 setup__all () {
@@ -87,7 +92,6 @@ for i in `seq ${NUM_ZT}`; do
 done
 }
 
-# echo alias z${i}="zerotier-cli -D${BASE_DIR}/node${i}"
 
 if declare -f "${1}__$2" >/dev/null; then
 	func="${1}__$2"
