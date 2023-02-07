@@ -144,6 +144,7 @@ done
 
 ## Production
 Configuring interface bonds and zerotier like this in a reproducible, production way is left as an exercise to the reader. Maybe we'll wrap it up in a script later. 
+There's a really rough script in script.sh
 
 
 
