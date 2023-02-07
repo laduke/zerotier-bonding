@@ -64,6 +64,18 @@ setup__all () {
 	setup__bridging
 }
 
+remove__bond () {
+	echo ip link set zt-bond down
+
+	for i in `seq ${NUM_ZT}`; do
+		echo ip link set zt-node${i} down
+		echo ip link set nomaster zt-node${i}
+		echo ip link delete zt-node${i}
+	done
+
+	echo ip link delete zt-bond
+}
+
 
 
 
