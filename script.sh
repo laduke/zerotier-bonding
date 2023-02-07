@@ -8,6 +8,11 @@ export NUM_ZT=`nproc`
 set -e
 
 setup__zt () {
+	if [ -z "${NETWORKID}" ]; then
+    echo "Please set NETWORKID at the top of this file"
+	exit
+	fi
+
 	for i in `seq ${NUM_ZT}`; do
 		echo mkdir -p $BASE_DIR/node${i};
 	done
@@ -59,7 +64,7 @@ setup__bond () {
 	echo ip link set zt-bond address $MAC
 	echo ip addr add $IP dev zt-bond
 	echo ip link set zt-bond up
-}
+j
 
 setup__all () {
 	echo "set -x"
